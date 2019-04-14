@@ -26,9 +26,8 @@ const int ny = 256;
 
 float dt = 0.02f;
 int iterations = 5;
-float vorticity = 10.0f;
+float vorticity = 1.0f;
 
-vec2f mouse;
 
 void draw(const vec2f *data, int n, GLenum mode){
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -260,13 +259,6 @@ float randf(float a, float b){
     return lerp(a, b, u);
 }
 
-float sign(float x){
-    return
-        x > 0.0f ? +1.0f :
-        x < 0.0f ? -1.0f :
-        0.0f;
-}
-
 void fluid_simulation_step(){
     FOR_EACH_CELL {
         if (x > nx*0.5f) continue;
@@ -358,10 +350,9 @@ void on_frame(){
     FOR_EACH_CELL {
         float f = old_density(x, y);
         f = log2f(f*0.25f + 1.0f);
-        float f3 = f*f*f;
         float r = 0.2f*f;
-        float g = 1.5f*f;
-        float b = 1.5f*f;
+        float g = 0.8f*f;
+        float b = 0.2f*f;
         pixels(x, y) = rgba(r, g, b, 1.0);
     }
     double dt = sec() - t;
